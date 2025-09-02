@@ -1,0 +1,1 @@
+from app import vector_service
