@@ -4,9 +4,10 @@ FROM pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies including curl for healthcheck
 RUN apt-get update && apt-get install -y \
     build-essential \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first to leverage Docker cache
