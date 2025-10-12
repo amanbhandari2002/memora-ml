@@ -1,6 +1,22 @@
-fastapi
-uvicorn
-torch
-transformers
-pillow
-python-multipart
+# Web Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+
+# ML & Image Processing
+torch==2.2.0
+torchvision==0.17.0
+transformers==4.37.2
+sentence-transformers==2.3.1
+pillow==10.2.0
+
+# Vector Database
+qdrant-client==1.7.3
+
+# HTTP & File Handling
+requests==2.31.0
+python-multipart==0.0.6
+
+# Additional utilities (often needed by above packages)
+numpy==1.26.3
+sentencepiece==0.1.99
