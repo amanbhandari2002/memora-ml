@@ -5,7 +5,7 @@ pydantic==2.5.3
 
 # ML & Image Processing
 torch==2.5.1
-torchvision==0.17.0
+torchvision==0.20.1
 transformers==4.37.2
 sentence-transformers==2.3.1
 pillow==10.2.0
@@ -17,6 +17,6 @@ qdrant-client==1.7.3
 requests==2.31.0
 python-multipart==0.0.6
 
-# Additional utilities (often needed by above packages)
-numpy==1.26.3
+# Additional utilities
+numpy==1.26.4
 sentencepiece==0.1.99
