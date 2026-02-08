@@ -10,7 +10,7 @@ model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
 qdrant_client = QdrantClient(
     url="https://cf8717cd-b5d1-4746-b26d-c491d8af4f3c.us-west-1-0.aws.cloud.qdrant.io", 
-    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.pSyn3bMit2Hnvnc6-GuUOebzuy0ynNvFfyOZA6YUsIs",
+    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.weRf7ddugSfkqd53aDXNtGoAlbix1vddMWi7wSjBjRM",
 )
 
 
@@ -90,7 +90,7 @@ def searchCaptionMatch(caption, user_id):
     try:
         print('ok-----')
         embedding = model.encode(caption).tolist()
-        print('---->',len(embedding))
+        print('---->',len(embedding),user_id)
 
         results = qdrant_client.search(
             collection_name="memories",
