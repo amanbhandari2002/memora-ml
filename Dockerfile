@@ -1,26 +1,15 @@
-# Use PyTorch's official base image which comes with CUDA support
-FROM pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
+# Hugging Face Spaces: port 7860, CPU-only PyTorch (smaller image, works on free tier)
+FROM python:3.13-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies including curl for healthcheck
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements first to leverage Docker cache
+# Install Python deps: CPU-only torch first (saves ~2GB), then the rest
 COPY requirements.txt .
+RUN pip install --no-cache-dir torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the application
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 8000
-
-# Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Spaces expect port 7860
+EXPOSE 7860
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]

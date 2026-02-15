@@ -1,17 +1,21 @@
+import os
+import uuid
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
-from qdrant_client.models import VectorParams, Distance,PayloadSchemaType
+from qdrant_client.models import VectorParams, Distance, PayloadSchemaType
 from qdrant_client.http import models
-import uuid
 
+# Env vars for Hugging Face Spaces (set in Space → Settings → Secrets)
+QDRANT_URL = os.environ.get(
+    "QDRANT_URL"
+)
+QDRANT_API_KEY = os.environ.get(
+    "QDRANT_API_KEY"
+)
 
 model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
-
-qdrant_client = QdrantClient(
-    url="https://cf8717cd-b5d1-4746-b26d-c491d8af4f3c.us-west-1-0.aws.cloud.qdrant.io", 
-    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.weRf7ddugSfkqd53aDXNtGoAlbix1vddMWi7wSjBjRM",
-)
+qdrant_client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
 
 
 def init_qdrant_collection():
@@ -92,9 +96,9 @@ def searchCaptionMatch(caption, user_id):
         embedding = model.encode(caption).tolist()
         print('---->',len(embedding),user_id)
 
-        results = qdrant_client.search(
+        response = qdrant_client.query_points(
             collection_name="memories",
-            query_vector=embedding,
+            query=embedding,
             limit=5,
             query_filter=models.Filter(
                 must=[
@@ -103,10 +107,10 @@ def searchCaptionMatch(caption, user_id):
                         match=models.MatchValue(value=user_id)
                     )
                 ]
-            )
+            ),
         )
+        results = response.points
 
-        
         filtered_results = [r for r in results if r.score >= 0.6]
         print('--------',filtered_results)
         return filtered_results

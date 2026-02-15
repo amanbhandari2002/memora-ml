@@ -21,3 +21,4 @@ python-multipart>=0.0.6
 # Additional utilities (sentencepiece 0.2.1+ for Python 3.13)
 numpy>=1.26.3
 sentencepiece>=0.2.1
+python-dotenv>=1.0.0
