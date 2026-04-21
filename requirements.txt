@@ -1,7 +1,8 @@
+# Python 3.13 compatible
 # Web Framework
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
-pydantic==2.5.3
+fastapi>=0.115.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.3
 
 # ML & Embeddings
 sentence-transformers==2.3.1
@@ -11,11 +12,11 @@ pillow==10.2.0
 google-generativeai==0.7.2
 
 # Vector Database
-qdrant-client==1.7.3
+qdrant-client>=1.16.0
 
 # HTTP & File Handling
-requests==2.31.0
-python-multipart==0.0.6
+requests>=2.31.0
+python-multipart>=0.0.6
 
 # Utilities
 numpy==1.26.3
