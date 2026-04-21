@@ -1,15 +1,35 @@
+import os
+import io
+import google.generativeai as genai
 from PIL import Image
-import torch
-from models.blip import processor,model
 
-def describe_image(uploaded_file):
-    print('got here')
-    print('up------',uploaded_file)
+# Configure Gemini once at module load
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+_gemini_model = genai.GenerativeModel("gemini-1.5-flash")
 
-    # Generate caption using BLIP
-    prompt = "Describe this image vividly, including objects, colors, and context."
-    inputs = processor(images=uploaded_file, text=prompt ,return_tensors="pt")
-    out = model.generate(**inputs,num_beams=7,
-    max_length=100,early_stopping=True)
-    caption = processor.decode(out[0], skip_special_tokens=True)
-    return caption
+CAPTION_PROMPT = (
+    "Describe this image vividly and in detail, "
+    "including the main objects, colors, mood, and any relevant context. "
+    "Keep the description under 150 words."
+)
+
+def describe_image(uploaded_file: Image.Image) -> str:
+    """Generate a descriptive caption for an image using Google Gemini."""
+    print("describe_image called")
+    print("image:", uploaded_file)
+
+    # Convert PIL image to JPEG bytes for the Gemini API
+    buffer = io.BytesIO()
+    uploaded_file.convert("RGB").save(buffer, format="JPEG")
+    image_bytes = buffer.getvalue()
+
+    image_part = {
+        "mime_type": "image/jpeg",
+        "data": image_bytes,
+    }
+
+    response = _gemini_model.generate_content([CAPTION_PROMPT, image_part])
+    caption = response.text.strip()
+
+    print("caption:", caption)
+    return caption
