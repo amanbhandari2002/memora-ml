@@ -5,7 +5,7 @@ from PIL import Image
 
 # Configure Gemini once at module load
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-_gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+_gemini_model = genai.GenerativeModel("gemini-2.0-flash")
 
 CAPTION_PROMPT = (
     "Describe this image vividly and in detail, "
